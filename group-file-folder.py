@@ -1,5 +1,4 @@
 import os
-import sys
 import shutil
 
 path = '/mnt/c/Users/user/Downloads'
@@ -45,9 +44,10 @@ for file in list_files:
         dir_path = os.path.join(path, folder_name)
         file_path = os.path.join(path, file)
         destination_file = os.path.join(dir_path, file) # Full path of the future destination
-
-        os.makedirs(dir_path, exist_ok=True)
-        print(f"Created {folder_name} in {dir_path}")
+        
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path, exist_ok=True)
+            print(f"{folder_name} | Created in {dir_path}")
 
         if os.path.exists(destination_file):
             print(f"Skipping {file}: Already exists in {folder_name}")
@@ -55,12 +55,8 @@ for file in list_files:
 
         try:
             shutil.move(file_path, dir_path)
-            print(f"Successfully moved {file} to {folder_name}")
+            print(f"{folder_name} | Success moving {file}")
         except PermissionError:
             print(f"Could not move {file}: File is in use by another program")
         except Exception as e:
             print(f"An unexpected error occurred with {file}: {e}")
-
-
-        # Creating the directory and moving the file inside the directory
-        print(f"Moved {file} to {folder_name}")
